@@ -1,0 +1,15 @@
+[project]
+name = "sutra"
+version = "0.1.0"
+description = "Alpha research engine for Indian equities"
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy"]
+
+[project.optional-dependencies]
+data = ["pandas", "pyarrow", "polars"]
+research = ["cvxpy", "lightgbm"]
+dev = ["pytest", "pybind11"]
+
+[tool.pytest.ini_options]
+pythonpath = ["python", "build"]
+testpaths = ["tests"]

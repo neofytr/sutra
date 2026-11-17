@@ -1,0 +1,6 @@
+build/
+compile_commands.json
+__pycache__/
+.pytest_cache/
+data/raw/
+*.parquet

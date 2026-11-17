@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.20)
+project(sutra CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+add_compile_options(-Wall -Wextra -march=native)
+
+add_library(sutra_core STATIC cpp/src/ops.cpp)
+target_include_directories(sutra_core PUBLIC cpp/include)
+set_target_properties(sutra_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+enable_testing()
+add_executable(test_ops cpp/tests/test_ops.cpp)
+target_link_libraries(test_ops sutra_core)
+target_compile_options(test_ops PRIVATE -UNDEBUG)
+add_test(NAME test_ops COMMAND test_ops)
+
+# Python bindings, only if pybind11 is installed (pip install pybind11)
+find_package(pybind11 CONFIG QUIET)
+if(pybind11_FOUND)
+  pybind11_add_module(_core cpp/src/bindings.cpp)
+  target_link_libraries(_core PRIVATE sutra_core)
+endif()
